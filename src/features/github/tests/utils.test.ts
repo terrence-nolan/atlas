@@ -59,40 +59,40 @@ describe("getCommitCountsLast7Days", () => {
   });
 
   it("counts commits for each of the last seven days", () => {
-    const commits = [
-      {
-        commit: {
-          author: {
-            date: "2026-08-11T10:00:00Z",
-          },
-        },
+const commits = [
+  {
+    commit: {
+      author: {
+        date: "2026-08-11T10:00:00Z",
       },
-      {
-        commit: {
-          author: {
-            date: "2026-08-11T14:00:00Z",
-          },
-        },
+    },
+  },
+  {
+    commit: {
+      author: {
+        date: "2026-08-11T14:00:00Z",
       },
-      {
-        commit: {
-          author: {
-            date: "2026-08-13T09:00:00Z",
-          },
-        },
+    },
+  },
+  {
+    commit: {
+      author: {
+        date: "2026-08-13T09:00:00Z",
       },
-      {
-        commit: {
-          author: {
-            date: "2026-08-17T16:00:00Z",
-          },
-        },
+    },
+  },
+  {
+    commit: {
+      author: {
+        date: "2026-08-17T16:00:00Z",
       },
-    ] as GitHubCommit[];
+    },
+  },
+] as GitHubCommit[];
 
-    expect(getCommitCountsLast7Days(commits, now)).toEqual([
-      0, 2, 0, 1, 0, 0, 1,
-    ]);
+expect(getCommitCountsLast7Days(commits, now)).toEqual([
+  2, 0, 1, 0, 0, 0, 1,
+]);
   });
 
   it("ignores commits outside the last seven days", () => {
