@@ -11,15 +11,15 @@ import type { CurrentProject } from "./types";
 import { getCommitCountsLast7Days, mapLanguageData, mapLatestCommit } from "./utils";
 
 async function fetchCurrentProject(): Promise<CurrentProject> {
-  const username = process.env.GITHUB_USERNAME;
-  const repoName = process.env.GITHUB_CURRENT_REPOSITORY;
+  const username = process.env.ATLAS_GITHUB_USERNAME;
+  const repoName = process.env.ATLAS_GITHUB_CURRENT_REPOSITORY;
 
   if (!username) {
-    throw new Error("GITHUB_USERNAME is not configured");
+    throw new Error("ATLAS_GITHUB_USERNAME is not configured");
   }
 
   if (!repoName) {
-    throw new Error("GITHUB_CURRENT_REPOSITORY is not configured");
+    throw new Error("ATLAS_GITHUB_CURRENT_REPOSITORY is not configured");
   }
 
   const now = new Date();
