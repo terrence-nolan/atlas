@@ -1,5 +1,4 @@
-import { unstable_cache } from "next/cache";
-
+import { cacheLife } from "next/cache";
 import {
   getRepository,
   getLatestUserCommit,
@@ -10,17 +9,14 @@ import {
 import type { CurrentProject } from "./types";
 import { getCommitCountsLast7Days, mapLanguageData, mapLatestCommit } from "./utils";
 
-async function fetchCurrentProject(): Promise<CurrentProject> {
-  const username = process.env.ATLAS_GITHUB_USERNAME;
-  const repoName = process.env.ATLAS_GITHUB_CURRENT_REPOSITORY;
+async function fetchCurrentProject(
+  username: string,
+  repoName: string,
+): Promise<CurrentProject> {
+  "use cache";
 
-  if (!username) {
-    throw new Error("ATLAS_GITHUB_USERNAME is not configured");
-  }
-
-  if (!repoName) {
-    throw new Error("ATLAS_GITHUB_CURRENT_REPOSITORY is not configured");
-  }
+  cacheLife("github");
+  console.log("Fetching current project");
 
   const now = new Date();
   const sevenDaysAgo = new Date(now);
@@ -59,10 +55,17 @@ async function fetchCurrentProject(): Promise<CurrentProject> {
   } as CurrentProject;
 }
 
-export const getCurrentProject = unstable_cache(
-  fetchCurrentProject,
-  ["current-project"],
-  {
-    revalidate: 600,
-  },
-);
+export async function getCurrentProject(): Promise<CurrentProject> {
+  const username = process.env.ATLAS_GITHUB_USERNAME;
+  const repoName = process.env.ATLAS_GITHUB_CURRENT_REPOSITORY;
+
+  if (!username) {
+    throw new Error("ATLAS_GITHUB_USERNAME is not configured");
+  }
+
+  if (!repoName) {
+    throw new Error("ATLAS_GITHUB_CURRENT_REPOSITORY is not configured");
+  }
+
+  return fetchCurrentProject(username, repoName);
+}

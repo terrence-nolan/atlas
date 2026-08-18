@@ -1,13 +1,13 @@
-import { getCurrentProject } from "@/features/github/getCurrentProject";
-
-export const dynamic = "force-dynamic";
+import { Suspense } from "react";
+import CurrentProject from "./github/CurrentProject";
 
 export default async function Home() {
-  const project = await getCurrentProject();
-  console.log(project);
   return (
     <main>
       <h1>My Website</h1>
+      <Suspense fallback={null}>
+        <CurrentProject />
+      </Suspense>
     </main>
   );
 }
