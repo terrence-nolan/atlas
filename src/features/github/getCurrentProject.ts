@@ -9,18 +9,25 @@ import {
 import type { CurrentProject } from "./types";
 import { getCommitCountsLast7Days, mapLanguageData, mapLatestCommit } from "./utils";
 
-async function fetchCurrentProject(
-  username: string,
-  repoName: string,
-): Promise<CurrentProject> {
+export async function getCurrentProject(): Promise<CurrentProject> {
   "use cache";
-
   cacheLife("github");
-  console.log("Fetching current project");
+
+  const username = process.env.ATLAS_GITHUB_USERNAME;
+  const repoName = process.env.ATLAS_GITHUB_CURRENT_REPOSITORY;
+
+  if (!username) {
+    throw new Error("ATLAS_GITHUB_USERNAME is not configured");
+  }
+
+  if (!repoName) {
+    throw new Error("ATLAS_GITHUB_CURRENT_REPOSITORY is not configured");
+  }
 
   const now = new Date();
   const sevenDaysAgo = new Date(now);
   sevenDaysAgo.setDate(now.getDate() - 6);
+  
   const since = sevenDaysAgo.toISOString();
   const until = now.toISOString();
 
@@ -53,19 +60,4 @@ async function fetchCurrentProject(
     openIssues: openIssues.total_count,
     languages,
   } as CurrentProject;
-}
-
-export async function getCurrentProject(): Promise<CurrentProject> {
-  const username = process.env.ATLAS_GITHUB_USERNAME;
-  const repoName = process.env.ATLAS_GITHUB_CURRENT_REPOSITORY;
-
-  if (!username) {
-    throw new Error("ATLAS_GITHUB_USERNAME is not configured");
-  }
-
-  if (!repoName) {
-    throw new Error("ATLAS_GITHUB_CURRENT_REPOSITORY is not configured");
-  }
-
-  return fetchCurrentProject(username, repoName);
 }

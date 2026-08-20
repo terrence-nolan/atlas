@@ -2,8 +2,17 @@ import type { GitHubCommit, GitHubIssueSearchResponse, GitHubLanguages, GitHubRe
 
 const GITHUB_API_URL = "https://api.github.com";
 
+function githubFetch(url: string) {
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${process.env.ATLAS_GITHUB_TOKEN}`,
+      Accept: "application/vnd.github+json",
+    },
+  });
+}
+
 export async function getRepository(username: string, repoName: string): Promise<GitHubRepository> {
-  const response = await fetch(
+  const response = await githubFetch(
     `${GITHUB_API_URL}/repos/${username}/${repoName}`
   );
 
@@ -15,7 +24,7 @@ export async function getRepository(username: string, repoName: string): Promise
 }
 
 export async function getLatestUserCommit(username: string, repoName: string): Promise<GitHubCommit[]> {
-  const response = await fetch(
+  const response = await githubFetch(
     `${GITHUB_API_URL}/repos/${username}/${repoName}/commits?author=${username}&per_page=1`
   );
 
@@ -40,7 +49,7 @@ export async function getRecentCommits(
     until,
   });
 
-  const response = await fetch(
+  const response = await githubFetch(
     `${GITHUB_API_URL}/repos/${username}/${repoName}/commits?${params}`
   );
 
@@ -54,7 +63,7 @@ export async function getRecentCommits(
 }
 
 export async function getOpenIssues(username: string, repoName: string): Promise<GitHubIssueSearchResponse> {
-  const response = await fetch(
+  const response = await githubFetch(
     `${GITHUB_API_URL}/repos/${username}/${repoName}/issues`
   );
 
@@ -66,7 +75,7 @@ export async function getOpenIssues(username: string, repoName: string): Promise
 }
 
 export async function getLanguages(username: string, repoName: string): Promise<GitHubLanguages> {
-  const response = await fetch(
+  const response = await githubFetch(
     `${GITHUB_API_URL}/repos/${username}/${repoName}/languages`
   );
 
