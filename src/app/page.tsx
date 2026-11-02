@@ -5,7 +5,7 @@ export default async function Home() {
 
   return (
     <main>
-      <h1>My Website</h1>
+      <h1>Terrence Nolan</h1>
       <Suspense fallback={null}>
         <CurrentProject />
       </Suspense>
