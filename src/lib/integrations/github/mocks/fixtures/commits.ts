@@ -1,4 +1,3 @@
-
 import type { GitHubCommit } from "../../types";
 
 export const mockCommits: GitHubCommit[] = [
