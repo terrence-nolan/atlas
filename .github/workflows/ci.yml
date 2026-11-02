@@ -1,3 +1,4 @@
+
 name: CI
 
 on:
@@ -12,6 +13,13 @@ jobs:
     permissions:
       contents: read
 
+    env:
+      APP_ENV: ci
+      DATA_MODE: mock
+      ATLAS_GITHUB_USERNAME: ${{ vars.ATLAS_GITHUB_USERNAME }}
+      ATLAS_GITHUB_CURRENT_REPOSITORY: ${{ vars.ATLAS_GITHUB_CURRENT_REPOSITORY }}
+      ATLAS_GITHUB_TOKEN: ${{ secrets.ATLAS_GITHUB_TOKEN }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,7 +28,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 11
-        
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -38,6 +46,12 @@ jobs:
 
       - name: Test
         run: pnpm test
+        env:
+          APP_ENV: ci
+          DATA_MODE: mock
 
       - name: Build
         run: pnpm build
+        env:
+          APP_ENV: ci
+          DATA_MODE: mock

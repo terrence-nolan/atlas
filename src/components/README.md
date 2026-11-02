@@ -1,0 +1,1 @@
+If a component can be reused by three or more different pages, it should be built here.
