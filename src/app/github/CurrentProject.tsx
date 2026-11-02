@@ -1,7 +1,7 @@
-import { getCurrentProject } from "@/features/github/getCurrentProject";
+import { getCurrentProjectData } from "@/features/github/data";
 
 export default async function CurrentProject() {
-  const project = await getCurrentProject();
+  const project = await getCurrentProjectData();
 
   return (
     <>

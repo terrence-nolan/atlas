@@ -1,3 +1,5 @@
+import "server-only";
+
 import { cacheLife } from "next/cache";
 import {
   getRepository,
@@ -7,7 +9,11 @@ import {
   getLanguages,
 } from "@/lib/integrations/github/client";
 import type { CurrentProject } from "./types";
-import { getCommitCountsLast7Days, mapLanguageData, mapLatestCommit } from "./utils";
+import {
+  getCommitCountsLast7Days,
+  mapLanguageData,
+  mapLatestCommit,
+} from "./utils";
 
 export async function getCurrentProject(): Promise<CurrentProject> {
   "use cache";
@@ -27,7 +33,7 @@ export async function getCurrentProject(): Promise<CurrentProject> {
   const now = new Date();
   const sevenDaysAgo = new Date(now);
   sevenDaysAgo.setDate(now.getDate() - 6);
-  
+
   const since = sevenDaysAgo.toISOString();
   const until = now.toISOString();
 
@@ -46,9 +52,7 @@ export async function getCurrentProject(): Promise<CurrentProject> {
   ]);
 
   const latestCommit = mapLatestCommit(latestCommitResponse[0] ?? null);
-  
   const commitsLast7Days = getCommitCountsLast7Days(recentCommits);
-
   const languages = mapLanguageData(languageData);
 
   return {
@@ -59,5 +63,5 @@ export async function getCurrentProject(): Promise<CurrentProject> {
     commitsLast7Days,
     openIssues: openIssues.total_count,
     languages,
-  } as CurrentProject;
+  };
 }
