@@ -1,4 +1,4 @@
-import type { GitHubCommit, GitHubIssueSearchResponse, GitHubLanguages, GitHubRepository } from "./types";
+import type { GitHubCommit, GitHubIssue, GitHubLanguages, GitHubRepository } from "./types";
 
 const GITHUB_API_URL = "https://api.github.com";
 
@@ -62,16 +62,21 @@ export async function getRecentCommits(
   return response.json() as Promise<GitHubCommit[]>;
 }
 
-export async function getOpenIssues(username: string, repoName: string): Promise<GitHubIssueSearchResponse> {
+export async function getOpenIssues(
+  username: string,
+  repoName: string,
+): Promise<GitHubIssue[]> {
   const response = await githubFetch(
-    `${GITHUB_API_URL}/repos/${username}/${repoName}/issues`
+    `${GITHUB_API_URL}/repos/${username}/${repoName}/issues`,
   );
 
   if (!response.ok) {
-    throw new Error(`getOpenIssuesCount error: ${response.status} — ${response.statusText}`);
+    throw new Error(
+      `getOpenIssuesCount error: ${response.status} — ${response.statusText}`,
+    );
   }
 
-  return response.json() as Promise<GitHubIssueSearchResponse>;
+  return response.json() as Promise<GitHubIssue[]>;
 }
 
 export async function getLanguages(username: string, repoName: string): Promise<GitHubLanguages> {

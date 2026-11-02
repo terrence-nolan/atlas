@@ -54,6 +54,9 @@ export async function getCurrentProject(): Promise<CurrentProject> {
   const latestCommit = mapLatestCommit(latestCommitResponse[0] ?? null);
   const commitsLast7Days = getCommitCountsLast7Days(recentCommits);
   const languages = mapLanguageData(languageData);
+  const openIssueCount = openIssues.filter(
+    (issue) => !issue.pull_request,
+  ).length;
 
   return {
     name: repository.name,
@@ -61,7 +64,7 @@ export async function getCurrentProject(): Promise<CurrentProject> {
     url: repository.html_url,
     latestCommit,
     commitsLast7Days,
-    openIssues: openIssues.total_count,
+    openIssues: openIssueCount,
     languages,
   };
 }
