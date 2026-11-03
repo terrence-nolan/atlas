@@ -45,7 +45,7 @@ describe("mapEndorphinsActivity", () => {
       id: "activity-123",
       name: "Morning Run",
       type: "run",
-      startedAt: "2026-11-02T12:00:00.000Z",
+      startedAt: "2026-11-02T08:00:00",
       distanceMeters: 10000,
       movingTimeSeconds: 3000,
       elapsedTimeSeconds: 3200,

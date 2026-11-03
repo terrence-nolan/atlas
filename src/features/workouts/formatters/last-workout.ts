@@ -47,8 +47,7 @@ function getPreviousCalendarDate(date: string): string {
 }
 
 export function formatWorkoutDate(date: string): string {
-  const workoutDate = new Date(date);
-  const workoutDay = getCalendarDate(workoutDate);
+  const workoutDay = date.slice(0, 10);
   const todayDay = getCalendarDate(new Date());
 
   if (workoutDay === todayDay) return "Today";
@@ -57,12 +56,14 @@ export function formatWorkoutDate(date: string): string {
     return "Yesterday";
   }
 
+  const [year, month, day] = workoutDay.split("-").map(Number);
+
   return new Intl.DateTimeFormat("en-US", {
-    timeZone: TIME_ZONE,
     month: "long",
     day: "2-digit",
     year: "numeric",
-  }).format(workoutDate);
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(year, month - 1, day)));
 }
 
 export function formatLastWorkout(workout: Workout): FormattedWorkout {

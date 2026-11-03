@@ -33,7 +33,7 @@ export function mapEndorphinsActivity(
     id: activity._id,
     name: activity.name,
     type: mapWorkoutType(activity.type),
-    startedAt: activity.start_date,
+    startedAt: activity.start_date_local,
     distanceMeters: activity.distance,
     movingTimeSeconds: activity.moving_time,
     elapsedTimeSeconds: activity.elapsed_time,
