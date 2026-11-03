@@ -28,31 +28,41 @@ function formatDistance(meters: number, unit: "mi" | "yd"): string {
   return `${distance.toFixed(2)} ${unit}`;
 }
 
+const TIME_ZONE = "America/New_York";
+
+function getCalendarDate(date: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
 export function formatWorkoutDate(date: string): string {
   const workoutDate = new Date(date);
   const today = new Date();
 
-  const isSameDay = (a: Date, b: Date) =>
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
+  const workoutDay = getCalendarDate(workoutDate);
+  const todayDay = getCalendarDate(today);
 
-  if (isSameDay(workoutDate, today)) {
+  if (workoutDay === todayDay) {
     return "Today";
   }
 
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  if (isSameDay(workoutDate, yesterday)) {
+  if (workoutDay === getCalendarDate(yesterday)) {
     return "Yesterday";
   }
 
-  return workoutDate.toLocaleDateString("en-US", {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: TIME_ZONE,
     month: "long",
     day: "2-digit",
     year: "numeric",
-  });
+  }).format(workoutDate);
 }
 
 export function formatLastWorkout(workout: Workout): FormattedWorkout {
