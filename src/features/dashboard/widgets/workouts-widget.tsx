@@ -1,12 +1,12 @@
-import { getLastWorkout } from "@/features/workouts/services/workouts";
-import { formatLastWorkout, formatWorkoutDate } from "@/features/workouts/formatters/last-workout";
+import { connection } from "next/server";
+
+import { getWorkoutsData } from "@/features/workouts/data";
+import { formatWorkoutDate } from "@/features/workouts/formatters/last-workout";
 
 export default async function WorkoutsWidget() {
-  const workout = await getLastWorkout();
+  await connection();
 
-  const formattedWorkout = workout
-    ? formatLastWorkout(workout)
-    : null;
+  const { latest: formattedWorkout } = await getWorkoutsData();
 
   return (
     <section>
@@ -15,14 +15,8 @@ export default async function WorkoutsWidget() {
       {formattedWorkout ? (
         <div>
           <h3>{formattedWorkout.name}</h3>
-
-          <p>
-            {formattedWorkout.type}
-          </p>
-
-          <p>
-            {formatWorkoutDate(formattedWorkout.startedAt)}
-          </p>
+          <p>{formattedWorkout.type}</p>
+          <p>{formatWorkoutDate(formattedWorkout.startedAt)}</p>
 
           <div>
             {formattedWorkout.primaryMetrics.map((metric) => (
