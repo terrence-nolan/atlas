@@ -16,9 +16,6 @@ jobs:
     env:
       APP_ENV: ci
       DATA_MODE: mock
-      ATLAS_GITHUB_USERNAME: ${{ vars.ATLAS_GITHUB_USERNAME }}
-      ATLAS_GITHUB_CURRENT_REPOSITORY: ${{ vars.ATLAS_GITHUB_CURRENT_REPOSITORY }}
-      ATLAS_GITHUB_TOKEN: ${{ secrets.ATLAS_GITHUB_TOKEN }}
 
     steps:
       - name: Checkout repository

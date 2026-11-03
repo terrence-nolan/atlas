@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import CurrentProject from "./github/CurrentProject";
+import Dashboard from "@/features/dashboard/dashboard";
 
 export default async function Home() {
 
@@ -7,7 +7,7 @@ export default async function Home() {
     <main>
       <h1>Terrence Nolan</h1>
       <Suspense fallback={null}>
-        <CurrentProject />
+        <Dashboard />
       </Suspense>
     </main>
   );

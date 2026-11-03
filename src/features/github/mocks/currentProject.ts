@@ -1,4 +1,3 @@
-
 import type { CurrentProject } from "../types";
 
 export const mockCurrentProject: CurrentProject = {
