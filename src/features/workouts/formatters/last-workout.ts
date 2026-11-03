@@ -39,21 +39,21 @@ function getCalendarDate(date: Date): string {
   }).format(date);
 }
 
+function getPreviousCalendarDate(date: string): string {
+  const [year, month, day] = date.split("-").map(Number);
+  const previousDate = new Date(Date.UTC(year, month - 1, day - 1));
+
+  return previousDate.toISOString().slice(0, 10);
+}
+
 export function formatWorkoutDate(date: string): string {
   const workoutDate = new Date(date);
-  const today = new Date();
-
   const workoutDay = getCalendarDate(workoutDate);
-  const todayDay = getCalendarDate(today);
+  const todayDay = getCalendarDate(new Date());
 
-  if (workoutDay === todayDay) {
-    return "Today";
-  }
+  if (workoutDay === todayDay) return "Today";
 
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  if (workoutDay === getCalendarDate(yesterday)) {
+  if (workoutDay === getPreviousCalendarDate(todayDay)) {
     return "Yesterday";
   }
 
