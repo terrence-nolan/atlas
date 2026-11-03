@@ -14,12 +14,13 @@ function getRequiredEnv(name: string): string {
 }
 
 export async function createSupabaseAuthClient() {
+  // Access request-time data first.
+  const cookieStore = await cookies();
+
   const supabaseUrl = getRequiredEnv("SUPABASE_URL");
   const supabasePublishableKey = getRequiredEnv(
     "SUPABASE_PUBLISHABLE_KEY",
   );
-
-  const cookieStore = await cookies();
 
   return createServerClient(supabaseUrl, supabasePublishableKey, {
     cookies: {

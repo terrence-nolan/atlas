@@ -64,14 +64,6 @@ function redirectToAdmin(
   return response;
 }
 
-/**
- * OAuth client_secret_basic requires form-encoding the client credentials
- * before joining them with a colon and Base64-encoding the result.
- */
-// function encodeBasicCredential(value: string): string {
-//   return new URLSearchParams({ value }).toString().slice("value=".length);
-// }
-
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
 
