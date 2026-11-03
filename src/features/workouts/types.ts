@@ -42,10 +42,16 @@ export interface WorkoutStats {
 export interface FormattedWorkout {
   id: string;
   name: string;
-  type: string;
+  type: WorkoutType;
   startedAt: string;
-  metrics: {
+  primaryMetrics: {
     label: string;
     value: string;
   }[];
+  averageHeartRate: string | null;
+}
+
+export interface WorkoutsDashboardData {
+  latest: FormattedWorkout | null;
+  stats: WorkoutStats;
 }

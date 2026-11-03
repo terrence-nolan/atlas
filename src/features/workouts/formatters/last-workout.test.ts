@@ -25,11 +25,10 @@ describe("formatLastWorkout", () => {
   it("formats a running workout", () => {
     const result = formatLastWorkout(createWorkout());
 
-    expect(result.metrics).toEqual([
+    expect(result.primaryMetrics).toEqual([
       { label: "Distance", value: "6.21 mi" },
+      { label: "Pace", value: "8:03/mi" },
       { label: "Time", value: "50m 0s" },
-      { label: "Pace", value: "8:03" },
-      { label: "Avg HR", value: "150 bpm" },
     ]);
   });
 
@@ -38,7 +37,7 @@ describe("formatLastWorkout", () => {
       createWorkout({ type: "walk" }),
     );
 
-    expect(result.metrics).toEqual([
+    expect(result.primaryMetrics).toEqual([
       { label: "Distance", value: "6.21 mi" },
       { label: "Time", value: "50m 0s" },
       { label: "Calories", value: "650 kcal" },
@@ -50,10 +49,9 @@ describe("formatLastWorkout", () => {
       createWorkout({ type: "ride" }),
     );
 
-    expect(result.metrics).toEqual([
+    expect(result.primaryMetrics).toEqual([
       { label: "Distance", value: "6.21 mi" },
       { label: "Time", value: "50m 0s" },
-      { label: "Avg HR", value: "150 bpm" },
     ]);
   });
 
@@ -62,7 +60,7 @@ describe("formatLastWorkout", () => {
       createWorkout({ type: "swim" }),
     );
 
-    expect(result.metrics[0]).toEqual({
+    expect(result.primaryMetrics[0]).toEqual({
       label: "Distance",
       value: "10936.13 yd",
     });
@@ -73,7 +71,7 @@ describe("formatLastWorkout", () => {
       createWorkout({ type: "row" }),
     );
 
-    expect(result.metrics[0]).toEqual({
+    expect(result.primaryMetrics[0]).toEqual({
       label: "Distance",
       value: "10936.13 yd",
     });
@@ -84,10 +82,10 @@ describe("formatLastWorkout", () => {
       createWorkout({ type: "other" }),
     );
 
-    expect(result.metrics).toEqual([
+    expect(result.primaryMetrics).toEqual([
+      { label: "Distance", value: "6.21 mi"},
       { label: "Time", value: "50m 0s" },
       { label: "Calories", value: "650 kcal" },
-      { label: "Avg HR", value: "150 bpm" },
     ]);
   });
 
@@ -100,7 +98,7 @@ describe("formatLastWorkout", () => {
       }),
     );
 
-    expect(result.metrics).toEqual([
+    expect(result.primaryMetrics).toEqual([
       { label: "Distance", value: "6.21 mi" },
       { label: "Time", value: "50m 0s" },
     ]);

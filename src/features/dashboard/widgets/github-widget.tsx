@@ -1,6 +1,6 @@
 import { getCurrentProjectData } from "@/features/github/data";
 
-export default async function CurrentProject() {
+export default async function GitHubWidget() {
   const project = await getCurrentProjectData();
 
   return (

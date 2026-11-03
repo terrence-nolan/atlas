@@ -2,7 +2,8 @@ import "server-only";
 
 import { getEndorphinsActivities } from "@/lib/integrations/endorphins/client";
 import { mapEndorphinsActivity } from "../mappers/endorphins";
-import type { Workout, WorkoutStats, WorkoutType } from "../types";
+import type { Workout, WorkoutStats, WorkoutType, WorkoutsDashboardData } from "../types";
+import { formatLastWorkout } from "../formatters/last-workout";
 
 interface GetWorkoutsOptions {
   days?: number;
@@ -34,12 +35,15 @@ export async function getLastWorkout(): Promise<Workout | null> {
 }
 
 export async function getWorkoutStats(): Promise<WorkoutStats> {
+  const workouts = await getWorkouts({ days: 365 });
+  return calculateWorkoutStats(workouts);
+}
+
+export function calculateWorkoutStats(workouts: Workout[]): WorkoutStats {
   const periodEnd = new Date();
   const periodStart = new Date(
     periodEnd.getTime() - 365 * 24 * 60 * 60 * 1000,
   );
-
-  const workouts = await getWorkouts({ days: 365 });
 
   const activityCounts = new Map<WorkoutType, number>();
 
@@ -47,15 +51,12 @@ export async function getWorkoutStats(): Promise<WorkoutStats> {
   let totalMovingTimeSeconds = 0;
 
   for (const workout of workouts) {
-    // Accumulate total activity time.
     totalMovingTimeSeconds += workout.movingTimeSeconds;
 
-    // Only running activities contribute to running distance.
     if (workout.type === "run") {
       totalRunningDistanceMeters += workout.distanceMeters;
     }
 
-    // Count activities by normalized workout type.
     activityCounts.set(
       workout.type,
       (activityCounts.get(workout.type) ?? 0) + 1,
@@ -66,7 +67,6 @@ export async function getWorkoutStats(): Promise<WorkoutStats> {
     activityCounts,
     ([type, count]) => ({ type, count }),
   ).sort((a, b) => {
-    // Sort by frequency, then alphabetically for consistent ordering.
     return b.count - a.count || a.type.localeCompare(b.type);
   });
 
@@ -77,5 +77,14 @@ export async function getWorkoutStats(): Promise<WorkoutStats> {
     totalRunningDistanceMeters,
     totalMovingTimeSeconds,
     activityTypeCounts,
+  };
+}
+
+export async function getWorkoutsDashboardData(): Promise<WorkoutsDashboardData> {
+  const workouts = await getWorkouts({ days: 365 });
+
+  return {
+    latest: workouts[0] ? formatLastWorkout(workouts[0]) : null,
+    stats: calculateWorkoutStats(workouts),
   };
 }

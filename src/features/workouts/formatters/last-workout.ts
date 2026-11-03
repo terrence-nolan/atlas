@@ -28,31 +28,51 @@ function formatDistance(meters: number, unit: "mi" | "yd"): string {
   return `${distance.toFixed(2)} ${unit}`;
 }
 
-function formatHeartRate(heartRate: number | null): string | null {
-  return heartRate === null ? null : `${Math.round(heartRate)} bpm`;
+export function formatWorkoutDate(date: string): string {
+  const workoutDate = new Date(date);
+  const today = new Date();
+
+  const isSameDay = (a: Date, b: Date) =>
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate();
+
+  if (isSameDay(workoutDate, today)) {
+    return "Today";
+  }
+
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  if (isSameDay(workoutDate, yesterday)) {
+    return "Yesterday";
+  }
+
+  return workoutDate.toLocaleDateString("en-US", {
+    month: "long",
+    day: "2-digit",
+    year: "numeric",
+  });
 }
 
-export function formatLastWorkout(
-  workout: Workout,
-): FormattedWorkout {
-  const metrics: FormattedWorkout["metrics"] = [];
+export function formatLastWorkout(workout: Workout): FormattedWorkout {
+  const primaryMetrics: FormattedWorkout["primaryMetrics"] = [];
 
   const addMetric = (label: string, value: string | null) => {
     if (value !== null) {
-      metrics.push({ label, value });
+      primaryMetrics.push({ label, value });
     }
   };
 
   const addDistance = (unit: "mi" | "yd") => {
-    addMetric("Distance", formatDistance(workout.distanceMeters, unit));
+    if (workout.distanceMeters > 0) {
+      const value = formatDistance(workout.distanceMeters, unit);
+      addMetric("Distance", value);
+    }
   };
 
   const addMovingTime = () => {
     addMetric("Time", formatDuration(workout.movingTimeSeconds));
-  };
-
-  const addHeartRate = () => {
-    addMetric("Avg HR", formatHeartRate(workout.averageHeartRate));
   };
 
   const addCalories = () => {
@@ -65,9 +85,13 @@ export function formatLastWorkout(
   switch (workout.type) {
     case "run":
       addDistance("mi");
+      addMetric(
+        "Pace",
+        workout.averagePacePerMile
+          ? `${workout.averagePacePerMile}/mi`
+          : null,
+      );
       addMovingTime();
-      addMetric("Pace", workout.averagePacePerMile);
-      addHeartRate();
       break;
 
     case "walk":
@@ -79,20 +103,18 @@ export function formatLastWorkout(
     case "ride":
       addDistance("mi");
       addMovingTime();
-      addHeartRate();
       break;
 
     case "swim":
     case "row":
       addDistance("yd");
       addMovingTime();
-      addHeartRate();
       break;
 
     case "other":
+      addDistance("mi");
       addMovingTime();
       addCalories();
-      addHeartRate();
       break;
   }
 
@@ -101,6 +123,10 @@ export function formatLastWorkout(
     name: workout.name,
     type: workout.type,
     startedAt: workout.startedAt,
-    metrics,
+    primaryMetrics,
+    averageHeartRate:
+      workout.averageHeartRate === null
+        ? null
+        : `${Math.round(workout.averageHeartRate)} bpm`,
   };
 }
