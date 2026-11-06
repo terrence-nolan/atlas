@@ -4,14 +4,11 @@ export default async function GitHubWidget() {
   const project = await getCurrentProjectData();
 
   return (
-    <>
-      <h2>Currently Building</h2>
-      <div>
-        <>Name: {project.name}</><br/>
-        <>Description: {project.description}</><br/>
-        <>Last Updated: {project.latestCommit?.date}</><br/>
-        <>Open Issues: {project.openIssues}</><br/>
-      </div>
-    </>
+    <div className="flex flex-col">
+      <h4 className="font-bold text-lg">{project.name}</h4>
+      <p>{project.description}</p>
+      <p className="text-xs">{project.languages[0].name}</p>
+      <p className="font-extralight text-xs pt-4">Updated {project.latestCommit?.date}</p>
+    </div>
   );
 }

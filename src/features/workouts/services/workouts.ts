@@ -53,7 +53,7 @@ export function calculateWorkoutStats(workouts: Workout[]): WorkoutStats {
   for (const workout of workouts) {
     totalMovingTimeSeconds += workout.movingTimeSeconds;
 
-    if (workout.type === "run") {
+    if (workout.type === "Run") {
       totalRunningDistanceMeters += workout.distanceMeters;
     }
 

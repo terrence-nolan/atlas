@@ -5,20 +5,20 @@ import type { Workout, WorkoutType } from "../types";
 function mapWorkoutType(type: string): WorkoutType {
   switch (type.toLowerCase()) {
     case "run":
-      return "run";
+      return "Run";
     case "walk":
-      return "walk";
+      return "Walk";
     case "ride":
     case "cycling":
     case "virtualride":
-      return "ride";
+      return "Ride";
     case "swim":
-      return "swim";
+      return "Swim";
     case "row":
     case "rowing":
-      return "row";
+      return "Row";
     default:
-      return "other";
+      return "Other";
   }
 }
 

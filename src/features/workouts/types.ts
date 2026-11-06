@@ -1,10 +1,10 @@
 export type WorkoutType =
-  | "run"
-  | "walk"
-  | "ride"
-  | "swim"
-  | "row"
-  | "other";
+  | "Run"
+  | "Walk"
+  | "Ride"
+  | "Swim"
+  | "Row"
+  | "Other";
 
 export interface Workout {
   id: string;

@@ -176,9 +176,9 @@ describe("getWorkoutStats", () => {
       totalRunningDistanceMeters: 15000,
       totalMovingTimeSeconds: 10800,
       activityTypeCounts: [
-        { type: "run", count: 2 },
-        { type: "ride", count: 1 },
-        { type: "walk", count: 1 },
+        { type: "Run", count: 2 },
+        { type: "Ride", count: 1 },
+        { type: "Walk", count: 1 },
       ],
     });
 

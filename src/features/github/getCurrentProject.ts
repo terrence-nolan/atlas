@@ -12,7 +12,7 @@ import type { CurrentProject } from "./types";
 import {
   getCommitCountsLast7Days,
   mapLanguageData,
-  mapLatestCommit,
+  mapLatestCommitDate,
 } from "./utils";
 
 export async function getCurrentProject(): Promise<CurrentProject> {
@@ -51,7 +51,7 @@ export async function getCurrentProject(): Promise<CurrentProject> {
     getLanguages(username, repoName),
   ]);
 
-  const latestCommit = mapLatestCommit(latestCommitResponse[0] ?? null);
+  const latestCommit = mapLatestCommitDate(latestCommitResponse[0] ?? null);
   const commitsLast7Days = getCommitCountsLast7Days(recentCommits);
   const languages = mapLanguageData(languageData);
   const openIssueCount = openIssues.filter(

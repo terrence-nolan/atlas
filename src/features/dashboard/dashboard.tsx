@@ -1,17 +1,17 @@
 import GitHubWidget from "@/features/dashboard/widgets/github-widget"
 import WorkoutsWidget from "./widgets/workouts-widget";
-import Widget from "@/app/dashboard/widget";
+import WidgetWrapper from "@/app/dashboard/widget-wrapper";
 
 export default async function Dashboard() {
 
   return (
-    <>
-      <Widget>
+    <div className="flex flex-row justify-center gap-4">
+      <WidgetWrapper header="Currently Building" themeColor="sage">
         <GitHubWidget />
-      </Widget>
-      <Widget>
+      </WidgetWrapper>
+      <WidgetWrapper header="Latest Workout" themeColor="clay">
         <WorkoutsWidget />
-      </Widget>
-    </>
+      </WidgetWrapper>
+    </div>
   );
 }

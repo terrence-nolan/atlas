@@ -59,8 +59,8 @@ export function formatWorkoutDate(date: string): string {
   const [year, month, day] = workoutDay.split("-").map(Number);
 
   return new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    day: "2-digit",
+    month: "short",
+    day: "numeric",
     year: "numeric",
     timeZone: "UTC",
   }).format(new Date(Date.UTC(year, month - 1, day)));
@@ -94,7 +94,7 @@ export function formatLastWorkout(workout: Workout): FormattedWorkout {
   };
 
   switch (workout.type) {
-    case "run":
+    case "Run":
       addDistance("mi");
       addMetric(
         "Pace",
@@ -105,24 +105,24 @@ export function formatLastWorkout(workout: Workout): FormattedWorkout {
       addMovingTime();
       break;
 
-    case "walk":
+    case "Walk":
       addDistance("mi");
       addMovingTime();
       addCalories();
       break;
 
-    case "ride":
+    case "Ride":
       addDistance("mi");
       addMovingTime();
       break;
 
-    case "swim":
-    case "row":
+    case "Swim":
+    case "Row":
       addDistance("yd");
       addMovingTime();
       break;
 
-    case "other":
+    case "Other":
       addDistance("mi");
       addMovingTime();
       addCalories();

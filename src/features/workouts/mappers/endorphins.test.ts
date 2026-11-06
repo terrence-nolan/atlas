@@ -44,7 +44,7 @@ describe("mapEndorphinsActivity", () => {
     expect(mapEndorphinsActivity(activity)).toEqual({
       id: "activity-123",
       name: "Morning Run",
-      type: "run",
+      type: "Run",
       startedAt: "2026-11-02T08:00:00",
       distanceMeters: 10000,
       movingTimeSeconds: 3000,
@@ -98,15 +98,15 @@ describe("mapEndorphinsActivity", () => {
   });
 
   it.each([
-    ["Run", "run"],
-    ["Walk", "walk"],
-    ["Ride", "ride"],
-    ["Cycling", "ride"],
-    ["VirtualRide", "ride"],
-    ["Swim", "swim"],
-    ["Row", "row"],
-    ["Rowing", "row"],
-    ["UnknownActivity", "other"],
+    ["Run", "Run"],
+    ["Walk", "Walk"],
+    ["Ride", "Ride"],
+    ["Cycling", "Ride"],
+    ["VirtualRide", "Ride"],
+    ["Swim", "Swim"],
+    ["Row", "Row"],
+    ["Rowing", "Row"],
+    ["UnknownActivity", "Other"],
   ] as const)("maps activity type %s to %s", (providerType, expectedType) => {
     const activity = createActivity({ type: providerType });
 

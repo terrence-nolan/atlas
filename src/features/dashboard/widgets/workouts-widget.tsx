@@ -1,4 +1,5 @@
 import { connection } from "next/server";
+import { HeartStraightIcon } from "@phosphor-icons/react/ssr";
 
 import { getWorkoutsData } from "@/features/workouts/data";
 import { formatWorkoutDate } from "@/features/workouts/formatters/last-workout";
@@ -10,26 +11,27 @@ export default async function WorkoutsWidget() {
 
   return (
     <section>
-      <h2>Most Recent Workout</h2>
-
       {formattedWorkout ? (
         <div>
-          <h3>{formattedWorkout.name}</h3>
-          <p>{formattedWorkout.type}</p>
-          <p>{formatWorkoutDate(formattedWorkout.startedAt)}</p>
+          <h4 className="font-bold text-lg">{formattedWorkout.name}</h4>
+          <div className="flex flex-row gap-1 items-center font-extralight text-xs">
+            <p>{formatWorkoutDate(formattedWorkout.startedAt)}</p>
+            <p>•</p>
+            <p>{formattedWorkout.type}</p>
+          </div>
 
-          <div>
+          <div className="flex flex-row gap-8 justify-between py-4">
             {formattedWorkout.primaryMetrics.map((metric) => (
-              <div key={metric.label}>
-                <span>{metric.label} </span>
-                <span>{metric.value}</span>
+              <div key={metric.label} className="flex flex-col">
+                <span className="text-sm">{metric.label} </span>
+                <span className="font-semibold">{metric.value}</span>
               </div>
             ))}
           </div>
 
-          <div>
-            <span>Average Heart Rate </span>
-            <span>{formattedWorkout.averageHeartRate ?? "-"}</span>
+          <div className="flex flex-row gap-1 items-center">
+            <HeartStraightIcon size={16} weight="fill" />
+            <span className="text-sm">{formattedWorkout.averageHeartRate ?? "-"}</span>
           </div>
         </div>
       ) : (
