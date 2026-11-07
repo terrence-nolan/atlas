@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
       revalidate: 900,
       expire: 86400,
     },
+    endorphins: {
+      stale: 14400,
+      revalidate: 14400,
+      expire: 604800,
+    },
   },
 };
 

@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cacheLife } from "next/cache";
+
 import { getEndorphinsActivities } from "@/lib/integrations/endorphins/client";
 import { mapEndorphinsActivity } from "../mappers/endorphins";
 import type { Workout, WorkoutStats, WorkoutType, WorkoutsDashboardData } from "../types";
@@ -10,15 +12,23 @@ interface GetWorkoutsOptions {
   limit?: number;
 }
 
+async function getCachedWorkouts(days: number): Promise<Workout[]> {
+  "use cache";
+
+  cacheLife("endorphins");
+
+  const activities = await getEndorphinsActivities(days);
+
+  return activities
+    .map(mapEndorphinsActivity)
+    .filter((workout): workout is Workout => workout !== null);
+}
+
 export async function getWorkouts({
   days = 365,
   limit,
 }: GetWorkoutsOptions = {}): Promise<Workout[]> {
-  const activities = await getEndorphinsActivities(days);
-
-  const workouts = activities
-    .map(mapEndorphinsActivity)
-    .filter((workout): workout is Workout => workout !== null);
+  const workouts = await getCachedWorkouts(days);
 
   return typeof limit === "number"
     ? workouts.slice(0, limit)
