@@ -22,9 +22,9 @@ export default async function WorkoutsWidget() {
           </div>
           <h5 className="font-semibold">{formattedWorkout.name}</h5>
           <div className="flex flex-row gap-1 items-center font-light text-xs pb-4">
-            <p>{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
-            <p>•</p>
             <p>{formattedWorkout.type}</p>
+            <p>•</p>
+            <p>{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
           </div>
 
           <div className="flex flex-row gap-10 pb-4">
