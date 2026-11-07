@@ -5,7 +5,7 @@ import WidgetWrapper from "@/app/dashboard/widget-wrapper";
 export default async function Dashboard() {
 
   return (
-    <div className="flex flex-row justify-center gap-4">
+    <div className="flex flex-row justify-center gap-4 p-8 border border-blue-soft rounded-xl">
       <WidgetWrapper themeColor="sage">
         <GitHubWidget />
       </WidgetWrapper>

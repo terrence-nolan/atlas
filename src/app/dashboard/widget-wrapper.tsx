@@ -14,7 +14,7 @@ export default function WidgetWrapper({ children, themeColor }: WidgetWrapperPro
   };
 
   return (
-    <section className={`rounded-xl p-5 ${sectionThemes[themeColor]}`}>
+    <section className={`rounded-xl p-4 grow ${sectionThemes[themeColor]}`}>
       {children}
     </section>
   );
