@@ -13,7 +13,7 @@ export default async function WorkoutsWidget() {
     <section>
       {formattedWorkout ? (
         <div>
-          <div className="flex flex-row items-center justify-between pb-2">
+          <div className="flex flex-row justify-between pb-2 items-center">
             <h4 className="font-bold text-lg flex flex-row items-center gap-2">
               <PulseIcon size={18} weight="bold" />
               Latest Workout
@@ -22,9 +22,9 @@ export default async function WorkoutsWidget() {
           </div>
           <h5 className="font-semibold">{formattedWorkout.name}</h5>
           <div className="flex flex-row gap-1 items-center font-light text-xs pb-4">
-            <p>{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
-            <p>•</p>
             <p>{formattedWorkout.type}</p>
+            <p>•</p>
+            <p>{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
           </div>
 
           <div className="flex flex-row gap-10 pb-4">

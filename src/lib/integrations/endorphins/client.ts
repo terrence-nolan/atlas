@@ -48,19 +48,14 @@ function parseActivitiesResponse(
   };
 }
 
-export async function getEndorphinsActivities(
-  days = 120,
-): Promise<EndorphinsActivity[]> {
-  if (!Number.isInteger(days) || days < 1 || days > 365) {
-    throw new Error("Activity history must be between 1 and 365 days");
-  }
-
-  const accessToken = await getEndorphinsAccessToken();
-
+async function fetchActivities(
+  accessToken: string,
+  days: number,
+): Promise<Response> {
   const url = new URL(`${API_BASE_URL}/activities`);
   url.searchParams.set("days", String(days));
 
-  const response = await fetch(url, {
+  return fetch(url, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -68,6 +63,27 @@ export async function getEndorphinsActivities(
     },
     cache: "no-store",
   });
+}
+
+export async function getEndorphinsActivities(
+  days = 120,
+): Promise<EndorphinsActivity[]> {
+  if (!Number.isInteger(days) || days < 1 || days > 365) {
+    throw new Error("Activity history must be between 1 and 365 days");
+  }
+
+  let accessToken = await getEndorphinsAccessToken();
+
+  let response = await fetchActivities(accessToken, days);
+
+  // Recover once if Endorphins rejects the access token.
+  if (response.status === 401) {
+    accessToken = await getEndorphinsAccessToken({
+      forceRefresh: true,
+    });
+
+    response = await fetchActivities(accessToken, days);
+  }
 
   if (!response.ok) {
     const responseBody = await response.text();
