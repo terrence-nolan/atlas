@@ -5,20 +5,20 @@ import type { Workout, WorkoutType } from "../types";
 function mapWorkoutType(type: string): WorkoutType {
   switch (type.toLowerCase()) {
     case "run":
-      return "run";
+      return "Run";
     case "walk":
-      return "walk";
+      return "Walk";
     case "ride":
     case "cycling":
     case "virtualride":
-      return "ride";
+      return "Ride";
     case "swim":
-      return "swim";
+      return "Swim";
     case "row":
     case "rowing":
-      return "row";
+      return "Row";
     default:
-      return "other";
+      return "Other";
   }
 }
 
@@ -33,7 +33,7 @@ export function mapEndorphinsActivity(
     id: activity._id,
     name: activity.name,
     type: mapWorkoutType(activity.type),
-    startedAt: activity.start_date,
+    startedAt: activity.start_date_local,
     distanceMeters: activity.distance,
     movingTimeSeconds: activity.moving_time,
     elapsedTimeSeconds: activity.elapsed_time,

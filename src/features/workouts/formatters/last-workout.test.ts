@@ -8,7 +8,7 @@ const createWorkout = (
 ): Workout => ({
   id: "workout-123",
   name: "Morning Run",
-  type: "run",
+  type: "Run",
   startedAt: "2026-11-02T12:00:00.000Z",
   distanceMeters: 10000,
   movingTimeSeconds: 3000,
@@ -34,7 +34,7 @@ describe("formatLastWorkout", () => {
 
   it("formats a walk", () => {
     const result = formatLastWorkout(
-      createWorkout({ type: "walk" }),
+      createWorkout({ type: "Walk" }),
     );
 
     expect(result.primaryMetrics).toEqual([
@@ -46,7 +46,7 @@ describe("formatLastWorkout", () => {
 
   it("formats a bike ride", () => {
     const result = formatLastWorkout(
-      createWorkout({ type: "ride" }),
+      createWorkout({ type: "Ride" }),
     );
 
     expect(result.primaryMetrics).toEqual([
@@ -57,7 +57,7 @@ describe("formatLastWorkout", () => {
 
   it("formats a swim using yards", () => {
     const result = formatLastWorkout(
-      createWorkout({ type: "swim" }),
+      createWorkout({ type: "Swim" }),
     );
 
     expect(result.primaryMetrics[0]).toEqual({
@@ -68,7 +68,7 @@ describe("formatLastWorkout", () => {
 
   it("formats a row using yards", () => {
     const result = formatLastWorkout(
-      createWorkout({ type: "row" }),
+      createWorkout({ type: "Row" }),
     );
 
     expect(result.primaryMetrics[0]).toEqual({
@@ -79,7 +79,7 @@ describe("formatLastWorkout", () => {
 
   it("formats other workouts", () => {
     const result = formatLastWorkout(
-      createWorkout({ type: "other" }),
+      createWorkout({ type: "Other" }),
     );
 
     expect(result.primaryMetrics).toEqual([

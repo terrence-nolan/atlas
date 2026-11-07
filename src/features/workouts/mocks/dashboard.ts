@@ -4,7 +4,7 @@ export const mockWorkoutsDashboard: WorkoutsDashboardData = {
   latest: {
     id: "mock-workout-1",
     name: "Morning Run",
-    type: "run",
+    type: "Run",
     startedAt: "2026-11-02T12:00:00.000Z",
     primaryMetrics: [
       { label: "Distance", value: "3.10 mi" },
@@ -20,9 +20,9 @@ export const mockWorkoutsDashboard: WorkoutsDashboardData = {
     totalRunningDistanceMeters: 650000,
     totalMovingTimeSeconds: 420000,
     activityTypeCounts: [
-      { type: "run", count: 105 },
-      { type: "walk", count: 25 },
-      { type: "ride", count: 12 },
+      { type: "Run", count: 105 },
+      { type: "Walk", count: 25 },
+      { type: "Ride", count: 12 },
     ],
   },
 };

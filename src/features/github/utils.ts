@@ -1,11 +1,10 @@
 import { CurrentProject } from './types';
 import type { GitHubCommit, GitHubLanguages } from "@/lib/integrations/github/types";
+import { getDateKey } from '@/lib/utils/date';
 
-export function getDateKey(date: Date) {
-  return date.toISOString().slice(0, 10);
-}
-
-export function mapLatestCommit(commit: GitHubCommit | null): CurrentProject["latestCommit"] {
+export function mapLatestCommitDate(
+  commit: GitHubCommit | null,
+): CurrentProject["latestCommit"] {
   if (!commit) {
     return null;
   }

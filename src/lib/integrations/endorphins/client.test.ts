@@ -54,6 +54,7 @@ describe("getEndorphinsActivities", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("retrieves activities using the default 120-day history", async () => {
@@ -116,6 +117,8 @@ describe("getEndorphinsActivities", () => {
   });
 
   it("throws when the provider request fails", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    
     fetchMock.mockResolvedValue(
       new Response(null, { status: 401 }),
     );

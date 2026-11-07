@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
-  getDateKey,
   getCommitCountsLast7Days,
   mapLanguageData,
-  mapLatestCommit,
+  mapLatestCommitDate,
 } from "../utils";
+import { getDateKey } from "@/lib/utils/date";
 import type { GitHubCommit, GitHubLanguages } from "@/lib/integrations/github/types";
 
 describe("getDateKey", () => {
@@ -17,7 +17,7 @@ describe("getDateKey", () => {
 
 describe("mapLatestCommit", () => {
   it("returns null when there is no latest commit", () => {
-    expect(mapLatestCommit(null)).toBeNull();
+    expect(mapLatestCommitDate(null)).toBeNull();
   });
 
   it("maps a commit to a latest commit object", () => {
@@ -29,7 +29,7 @@ describe("mapLatestCommit", () => {
       },
     } as GitHubCommit;
 
-    expect(mapLatestCommit(commit)).toEqual({
+    expect(mapLatestCommitDate(commit)).toEqual({
       date: "2026-08-17T15:30:00Z",
     });
   });
@@ -43,7 +43,7 @@ describe("mapLatestCommit", () => {
       },
     } as GitHubCommit;
 
-    expect(mapLatestCommit(commit)).toEqual({
+    expect(mapLatestCommitDate(commit)).toEqual({
       date: "",
     });
   });

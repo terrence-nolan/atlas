@@ -7,6 +7,10 @@ vi.mock("@/lib/integrations/endorphins/client", () => ({
   getEndorphinsActivities: vi.fn(),
 }));
 
+vi.mock("next/cache", () => ({
+  cacheLife: vi.fn(),
+}));
+
 const createActivity = (id: string, isPrivate = false) => ({
   _id: id,
   activity_id: `external-${id}`,
@@ -176,9 +180,9 @@ describe("getWorkoutStats", () => {
       totalRunningDistanceMeters: 15000,
       totalMovingTimeSeconds: 10800,
       activityTypeCounts: [
-        { type: "run", count: 2 },
-        { type: "ride", count: 1 },
-        { type: "walk", count: 1 },
+        { type: "Run", count: 2 },
+        { type: "Ride", count: 1 },
+        { type: "Walk", count: 1 },
       ],
     });
 

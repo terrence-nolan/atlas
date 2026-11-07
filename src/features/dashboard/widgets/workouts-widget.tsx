@@ -1,7 +1,8 @@
 import { connection } from "next/server";
+import { HeartStraightIcon, PulseIcon, CircleIcon } from "@phosphor-icons/react/ssr";
 
 import { getWorkoutsData } from "@/features/workouts/data";
-import { formatWorkoutDate } from "@/features/workouts/formatters/last-workout";
+import { getDateKey, formatCalendarDate, isToday } from "@/lib/utils/date";
 
 export default async function WorkoutsWidget() {
   await connection();
@@ -10,26 +11,34 @@ export default async function WorkoutsWidget() {
 
   return (
     <section>
-      <h2>Most Recent Workout</h2>
-
       {formattedWorkout ? (
         <div>
-          <h3>{formattedWorkout.name}</h3>
-          <p>{formattedWorkout.type}</p>
-          <p>{formatWorkoutDate(formattedWorkout.startedAt)}</p>
+          <div className="flex flex-row items-center justify-between pb-2">
+            <h4 className="font-bold text-lg flex flex-row items-center gap-2">
+              <PulseIcon size={18} weight="bold" />
+              Latest Workout
+            </h4>
+            {isToday(formattedWorkout.startedAt) && <CircleIcon size={12} weight="fill" className="text-clay" />}
+          </div>
+          <h5 className="font-semibold">{formattedWorkout.name}</h5>
+          <div className="flex flex-row gap-1 items-center font-light text-xs pb-4">
+            <p>{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
+            <p>•</p>
+            <p>{formattedWorkout.type}</p>
+          </div>
 
-          <div>
+          <div className="flex flex-row gap-10 pb-4">
             {formattedWorkout.primaryMetrics.map((metric) => (
-              <div key={metric.label}>
-                <span>{metric.label} </span>
-                <span>{metric.value}</span>
+              <div key={metric.label} className="flex flex-col">
+                <span className="text-sm">{metric.label} </span>
+                <span className="font-semibold">{metric.value}</span>
               </div>
             ))}
           </div>
 
-          <div>
-            <span>Average Heart Rate </span>
-            <span>{formattedWorkout.averageHeartRate ?? "-"}</span>
+          <div className="flex flex-row gap-1 items-center">
+            <HeartStraightIcon size={16} />
+            <span className="text-sm">{formattedWorkout.averageHeartRate ?? "-"}</span>
           </div>
         </div>
       ) : (

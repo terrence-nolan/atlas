@@ -1,26 +1,141 @@
 @import "tailwindcss";
 
+/* ============================================
+   Light theme
+   ============================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  /* Base */
+  --background: #F7F8F6;
+  --surface: #FFFFFF;
+  --surface-elevated: #F0F3F1;
+  --foreground: #29343D;
+  --border: #E4E9E7;
+
+  /* Text */
+  --text-primary: #303A40;
+  --text-secondary: #687780;
+  --text-tertiary: #87939A;
+  --text-disabled: #AEB8B8;
+
+  /* Primary palette */
+  --blue: #476B82;
+  --sage: #819B8A;
+  --clay: #C18E68;
+  --lavender: #A49AB5;
+  --ochre: #D3B978;
+
+  /* Soft backgrounds */
+  --blue-soft: #E8EEF1;
+  --sage-soft: #EAF0EB;
+  --clay-soft: #F3EAE3;
+  --lavender-soft: #EFEDF3;
+  --ochre-soft: #F5F0E2;
+
+  /* Accent text */
+  --blue-text: #365366;
+  --sage-text: #526E5B;
+  --clay-text: #8D5D3F;
+  --lavender-text: #716282;
+  --ochre-text: #786126;
 }
 
+/* ============================================
+   Dark theme
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    /* Base */
+    --background: #151B1D;
+    --surface: #1D2629;
+    --surface-elevated: #253034;
+    --foreground: #E8EEEB;
+    --border: #354448;
+
+    /* Text */
+    --text-primary: #E8EEEB;
+    --text-secondary: #AAB8B4;
+    --text-tertiary: #82918D;
+    --text-disabled: #596765;
+
+    /* Primary palette */
+    --blue: #91B5CA;
+    --sage: #A3BDAA;
+    --clay: #D9A982;
+    --lavender: #C1B5D4;
+    --ochre: #E3CB8B;
+
+    /* Soft backgrounds */
+    --blue-soft: #263943;
+    --sage-soft: #293B32;
+    --clay-soft: #403128;
+    --lavender-soft: #373244;
+    --ochre-soft: #403A27;
+
+    /* Accent text */
+    --blue-text: #B3D0DF;
+    --sage-text: #B5CEBB;
+    --clay-text: #E4B995;
+    --lavender-text: #D0C4E0;
+    --ochre-text: #E9D69D;
+  }
+}
+
+/* ============================================
+   Tailwind theme tokens
+   ============================================ */
+
 @theme inline {
+  /* Base */
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
   --color-foreground: var(--foreground);
+  --color-border: var(--border);
+
+  /* Text */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-disabled: var(--text-disabled);
+
+  /* Primary palette */
+  --color-blue: var(--blue);
+  --color-sage: var(--sage);
+  --color-clay: var(--clay);
+  --color-lavender: var(--lavender);
+  --color-ochre: var(--ochre);
+
+  /* Soft backgrounds */
+  --color-blue-soft: var(--blue-soft);
+  --color-sage-soft: var(--sage-soft);
+  --color-clay-soft: var(--clay-soft);
+  --color-lavender-soft: var(--lavender-soft);
+  --color-ochre-soft: var(--ochre-soft);
+
+  /* Accent text */
+  --color-blue-text: var(--blue-text);
+  --color-sage-text: var(--sage-text);
+  --color-clay-text: var(--clay-text);
+  --color-lavender-text: var(--lavender-text);
+  --color-ochre-text: var(--ochre-text);
+
+  /* Typography */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ============================================
+   Global styles
+   ============================================ */
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), sans-serif;
 }

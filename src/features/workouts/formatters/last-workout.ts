@@ -28,33 +28,6 @@ function formatDistance(meters: number, unit: "mi" | "yd"): string {
   return `${distance.toFixed(2)} ${unit}`;
 }
 
-export function formatWorkoutDate(date: string): string {
-  const workoutDate = new Date(date);
-  const today = new Date();
-
-  const isSameDay = (a: Date, b: Date) =>
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
-
-  if (isSameDay(workoutDate, today)) {
-    return "Today";
-  }
-
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  if (isSameDay(workoutDate, yesterday)) {
-    return "Yesterday";
-  }
-
-  return workoutDate.toLocaleDateString("en-US", {
-    month: "long",
-    day: "2-digit",
-    year: "numeric",
-  });
-}
-
 export function formatLastWorkout(workout: Workout): FormattedWorkout {
   const primaryMetrics: FormattedWorkout["primaryMetrics"] = [];
 
@@ -83,7 +56,7 @@ export function formatLastWorkout(workout: Workout): FormattedWorkout {
   };
 
   switch (workout.type) {
-    case "run":
+    case "Run":
       addDistance("mi");
       addMetric(
         "Pace",
@@ -94,24 +67,24 @@ export function formatLastWorkout(workout: Workout): FormattedWorkout {
       addMovingTime();
       break;
 
-    case "walk":
+    case "Walk":
       addDistance("mi");
       addMovingTime();
       addCalories();
       break;
 
-    case "ride":
+    case "Ride":
       addDistance("mi");
       addMovingTime();
       break;
 
-    case "swim":
-    case "row":
+    case "Swim":
+    case "Row":
       addDistance("yd");
       addMovingTime();
       break;
 
-    case "other":
+    case "Other":
       addDistance("mi");
       addMovingTime();
       addCalories();

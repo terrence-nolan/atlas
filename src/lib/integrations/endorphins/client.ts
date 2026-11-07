@@ -70,6 +70,14 @@ export async function getEndorphinsActivities(
   });
 
   if (!response.ok) {
+    const responseBody = await response.text();
+
+    console.error("Endorphins API error:", {
+      status: response.status,
+      statusText: response.statusText,
+      body: responseBody,
+    });
+
     throw new Error(
       `Endorphins activities request failed with status ${response.status}`,
     );
