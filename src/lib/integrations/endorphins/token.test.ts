@@ -7,7 +7,9 @@ import {
 
 import type { IntegrationToken } from "@/lib/integrations/token-types";
 
-import { getEndorphinsAccessToken } from "./token";
+import {
+  getEndorphinsAccessToken,
+} from "./token";
 
 vi.mock("@/lib/integrations/token-repository", () => ({
   getIntegrationToken: vi.fn(),
@@ -56,10 +58,14 @@ describe("getEndorphinsAccessToken", () => {
   });
 
   it("refreshes and saves tokens when the access token is expired", async () => {
-    vi.mocked(getIntegrationToken).mockResolvedValue({
+    const expiredToken = {
       ...currentToken,
       expiresAt: new Date(Date.now() - 1000).toISOString(),
-    });
+    };
+
+    vi.mocked(getIntegrationToken)
+      .mockResolvedValueOnce(expiredToken)
+      .mockResolvedValueOnce(expiredToken);
 
     fetchMock.mockResolvedValue(
       new Response(
@@ -81,6 +87,8 @@ describe("getEndorphinsAccessToken", () => {
     const accessToken = await getEndorphinsAccessToken();
 
     expect(accessToken).toBe("new-access-token");
+
+    expect(getIntegrationToken).toHaveBeenCalledTimes(2);
 
     expect(fetchMock).toHaveBeenCalledWith(
       "https://app.endorphinsrunning.com/oauth/token",
@@ -144,6 +152,108 @@ describe("getEndorphinsAccessToken", () => {
       "Endorphins token refresh failed with status 400",
     );
 
+    expect(saveIntegrationToken).not.toHaveBeenCalled();
+  });
+
+  it("forces a refresh even when the access token is still valid", async () => {
+    fetchMock.mockResolvedValue(
+      Response.json({
+        access_token: "new-access-token",
+        refresh_token: "new-refresh-token",
+        token_type: "Bearer",
+        expires_in: 3600,
+        scope: "read:workouts",
+      }),
+    );
+
+    const accessToken = await getEndorphinsAccessToken({
+      forceRefresh: true,
+    });
+
+    expect(accessToken).toBe("new-access-token");
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(getIntegrationToken).toHaveBeenCalledTimes(2);
+    expect(saveIntegrationToken).toHaveBeenCalledOnce();
+  });
+
+  it("uses updated credentials when another request already refreshed the token", async () => {
+    const expiredToken = {
+      ...currentToken,
+      expiresAt: new Date(Date.now() - 1000).toISOString(),
+    };
+
+    const updatedToken: IntegrationToken = {
+      accessToken: "updated-access-token",
+      refreshToken: "updated-refresh-token",
+      tokenType: "Bearer",
+      scope: "read:workouts",
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    };
+
+    vi.mocked(getIntegrationToken)
+      .mockResolvedValueOnce(expiredToken)
+      .mockResolvedValueOnce(updatedToken);
+
+    const accessToken = await getEndorphinsAccessToken();
+
+    expect(accessToken).toBe("updated-access-token");
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(saveIntegrationToken).not.toHaveBeenCalled();
+    expect(getIntegrationToken).toHaveBeenCalledTimes(2);
+  });
+
+  it("retains the existing refresh token when the refresh response omits one", async () => {
+    const expiredToken = {
+      ...currentToken,
+      expiresAt: new Date(Date.now() - 1000).toISOString(),
+    };
+
+    vi.mocked(getIntegrationToken).mockResolvedValue(expiredToken);
+
+    fetchMock.mockResolvedValue(
+      Response.json({
+        access_token: "new-access-token",
+        expires_in: 3600,
+      }),
+    );
+
+    const accessToken = await getEndorphinsAccessToken();
+
+    expect(accessToken).toBe("new-access-token");
+
+    const [, savedToken] =
+      vi.mocked(saveIntegrationToken).mock.calls[0];
+
+    expect(savedToken.refreshToken).toBe("current-refresh-token");
+  });
+
+  it("uses updated credentials when a concurrent refresh succeeds", async () => {
+    const expiredToken = {
+      ...currentToken,
+      expiresAt: new Date(Date.now() - 1000).toISOString(),
+    };
+
+    const updatedToken: IntegrationToken = {
+      accessToken: "updated-access-token",
+      refreshToken: "updated-refresh-token",
+      tokenType: "Bearer",
+      scope: "read:workouts",
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    };
+
+    vi.mocked(getIntegrationToken)
+      .mockResolvedValueOnce(expiredToken)
+      .mockResolvedValueOnce(expiredToken)
+      .mockResolvedValueOnce(updatedToken);
+
+    fetchMock.mockResolvedValue(
+      new Response(null, { status: 400 }),
+    );
+
+    const accessToken = await getEndorphinsAccessToken();
+
+    expect(accessToken).toBe("updated-access-token");
+    expect(getIntegrationToken).toHaveBeenCalledTimes(3);
     expect(saveIntegrationToken).not.toHaveBeenCalled();
   });
 });

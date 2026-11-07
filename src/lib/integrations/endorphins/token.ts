@@ -9,12 +9,12 @@ import type { IntegrationToken } from "@/lib/integrations/token-types";
 
 const TOKEN_URL = "https://app.endorphinsrunning.com/oauth/token";
 
-// Refresh one minute before the access token expires.
-const EXPIRATION_BUFFER_MS = 60 * 1000;
+// Refresh five minutes before the access token expires.
+const EXPIRATION_BUFFER_MS = 60 * 5 * 1000;
 
 interface RefreshTokenResponse {
   access_token: string;
-  refresh_token: string;
+  refresh_token?: string;
   token_type?: string;
   expires_in: number;
   scope?: string;
@@ -42,8 +42,9 @@ function isValidTokenResponse(
   return (
     typeof token.access_token === "string" &&
     token.access_token.length > 0 &&
-    typeof token.refresh_token === "string" &&
-    token.refresh_token.length > 0 &&
+    (token.refresh_token === undefined ||
+      (typeof token.refresh_token === "string" &&
+        token.refresh_token.length > 0)) &&
     typeof token.expires_in === "number" &&
     Number.isFinite(token.expires_in) &&
     token.expires_in > 0 &&
@@ -98,7 +99,7 @@ async function refreshAccessToken(
 
   return {
     accessToken: responseData.access_token,
-    refreshToken: responseData.refresh_token,
+    refreshToken: responseData.refresh_token ?? currentToken.refreshToken,
     tokenType:
       typeof responseData.token_type === "string"
         ? responseData.token_type
@@ -113,24 +114,67 @@ async function refreshAccessToken(
   };
 }
 
+function isTokenUpdated(
+  originalToken: IntegrationToken,
+  latestToken: IntegrationToken,
+): boolean {
+  return (
+    originalToken.accessToken !== latestToken.accessToken ||
+    originalToken.refreshToken !== latestToken.refreshToken
+  );
+}
+
 /**
  * Returns a usable Endorphins access token, refreshing it when necessary.
  */
-export async function getEndorphinsAccessToken(): Promise<string> {
+export async function getEndorphinsAccessToken(
+  options: { forceRefresh?: boolean } = {},
+): Promise<string> {
+  const { forceRefresh = false } = options;
+
   const currentToken = await getIntegrationToken("endorphins");
 
   if (!currentToken) {
     throw new Error("Endorphins is not connected");
   }
 
-  if (isAccessTokenValid(currentToken)) {
+  if (!forceRefresh && isAccessTokenValid(currentToken)) {
     return currentToken.accessToken;
   }
 
-  const refreshedToken = await refreshAccessToken(currentToken);
+  const latestToken = await getIntegrationToken("endorphins");
 
-  // Persist both tokens because the refresh token rotates.
-  await saveIntegrationToken("endorphins", refreshedToken);
+  if (!latestToken) {
+    throw new Error("Endorphins is not connected");
+  }
 
-  return refreshedToken.accessToken;
+  // Another request may have already refreshed the credentials.
+  if (
+    isTokenUpdated(currentToken, latestToken) &&
+    isAccessTokenValid(latestToken)
+  ) {
+    return latestToken.accessToken;
+  }
+
+  try {
+    const refreshedToken = await refreshAccessToken(latestToken);
+
+    await saveIntegrationToken("endorphins", refreshedToken);
+
+    return refreshedToken.accessToken;
+  } catch (error) {
+    // Another request may have refreshed the token while this
+    // request was attempting its own refresh.
+    const updatedToken = await getIntegrationToken("endorphins");
+
+    if (
+      updatedToken &&
+      isTokenUpdated(latestToken, updatedToken) &&
+      isAccessTokenValid(updatedToken)
+    ) {
+      return updatedToken.accessToken;
+    }
+
+    throw error;
+  }
 }
