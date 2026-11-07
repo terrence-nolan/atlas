@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 import { http, HttpResponse } from "msw";
 
 import { getGoogleBooksVolume } from "./client";
@@ -6,6 +6,10 @@ import { mockVolumeResponse } from "./mocks/fixtures/volume";
 import { server } from "../../../../tests/setup/msw";
 
 describe("getGoogleBooksVolume", () => {
+  beforeEach(() => {
+    process.env.GOOGLE_BOOKS_API_KEY = "test-api-key";
+  });
+
   it("returns the parsed volume", async () => {
     const result = await getGoogleBooksVolume("test-volume-id");
 
@@ -106,4 +110,12 @@ describe("getGoogleBooksVolume", () => {
       volumeInfo: {},
     });
   });
+
+  it("throws when the API key is not configured", async () => {
+  delete process.env.GOOGLE_BOOKS_API_KEY;
+
+  await expect(
+    getGoogleBooksVolume("test-volume-id"),
+  ).rejects.toThrow("GOOGLE_BOOKS_API_KEY is not configured");
+});
 });

@@ -86,6 +86,14 @@ async function refreshAccessToken(
   });
 
   if (!response.ok) {
+    const responseBody = await response.text();
+
+    console.error("Endorphins token refresh error:", {
+      status: response.status,
+      statusText: response.statusText,
+      body: responseBody,
+    });
+
     throw new Error(
       `Endorphins token refresh failed with status ${response.status}`,
     );

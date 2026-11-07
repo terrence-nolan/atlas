@@ -15,6 +15,16 @@ const nextConfig: NextConfig = {
       expire: 604800,
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "books.google.com",
+        port: "",
+        pathname: "/books/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

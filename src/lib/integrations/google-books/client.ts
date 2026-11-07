@@ -64,19 +64,30 @@ export async function getGoogleBooksVolume(
     throw new Error("Google Books volume ID cannot be empty");
   }
 
-  const response = await fetch(
+  const apiKey = process.env.GOOGLE_BOOKS_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("GOOGLE_BOOKS_API_KEY is not configured");
+  }
+
+  const url = new URL(
     `${API_BASE_URL}/${encodeURIComponent(volumeId)}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-    },
   );
 
+  url.searchParams.set("key", apiKey);
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
   if (!response.ok) {
+    const errorBody = await response.text();
+
     throw new Error(
-      `Google Books volume request failed with status ${response.status}`,
+      `Google Books volume request failed with status ${response.status}: ${errorBody}`,
     );
   }
 

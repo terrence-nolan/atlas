@@ -13,7 +13,7 @@ export default async function WorkoutsWidget() {
     <section>
       {formattedWorkout ? (
         <div>
-          <div className="flex flex-row justify-between pb-2">
+          <div className="flex flex-row justify-between pb-2 items-center">
             <h4 className="font-bold text-lg flex flex-row items-center gap-2">
               <PulseIcon size={18} weight="bold" />
               Latest Workout
