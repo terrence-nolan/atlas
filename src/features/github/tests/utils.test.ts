@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
-  getDateKey,
   getCommitCountsLast7Days,
   mapLanguageData,
   mapLatestCommitDate,
 } from "../utils";
+import { getDateKey } from "@/lib/utils/date";
 import type { GitHubCommit, GitHubLanguages } from "@/lib/integrations/github/types";
 
 describe("getDateKey", () => {
@@ -30,7 +30,7 @@ describe("mapLatestCommit", () => {
     } as GitHubCommit;
 
     expect(mapLatestCommitDate(commit)).toEqual({
-      date: "Aug 17, 2026",
+      date: "2026-08-17T15:30:00Z",
     });
   });
 

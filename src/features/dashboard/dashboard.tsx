@@ -6,10 +6,10 @@ export default async function Dashboard() {
 
   return (
     <div className="flex flex-row justify-center gap-4">
-      <WidgetWrapper header="Currently Building" themeColor="sage">
+      <WidgetWrapper themeColor="sage">
         <GitHubWidget />
       </WidgetWrapper>
-      <WidgetWrapper header="Latest Workout" themeColor="clay">
+      <WidgetWrapper themeColor="clay">
         <WorkoutsWidget />
       </WidgetWrapper>
     </div>

@@ -7,6 +7,10 @@ vi.mock("@/lib/integrations/endorphins/client", () => ({
   getEndorphinsActivities: vi.fn(),
 }));
 
+vi.mock("next/cache", () => ({
+  cacheLife: vi.fn(),
+}));
+
 const createActivity = (id: string, isPrivate = false) => ({
   _id: id,
   activity_id: `external-${id}`,

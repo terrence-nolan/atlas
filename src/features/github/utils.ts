@@ -1,9 +1,6 @@
 import { CurrentProject } from './types';
 import type { GitHubCommit, GitHubLanguages } from "@/lib/integrations/github/types";
-
-export function getDateKey(date: Date) {
-  return date.toISOString().slice(0, 10);
-}
+import { getDateKey } from '@/lib/utils/date';
 
 export function mapLatestCommitDate(
   commit: GitHubCommit | null,
@@ -13,14 +10,7 @@ export function mapLatestCommitDate(
   }
 
   return {
-    date: commit.commit.author.date
-      ? new Date(commit.commit.author.date).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-          timeZone: "UTC",
-        })
-      : "",
+    date: commit.commit.author.date ?? "",
   };
 }
 

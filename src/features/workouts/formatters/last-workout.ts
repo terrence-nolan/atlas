@@ -28,44 +28,6 @@ function formatDistance(meters: number, unit: "mi" | "yd"): string {
   return `${distance.toFixed(2)} ${unit}`;
 }
 
-const TIME_ZONE = "America/New_York";
-
-function getCalendarDate(date: Date): string {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: TIME_ZONE,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(date);
-}
-
-function getPreviousCalendarDate(date: string): string {
-  const [year, month, day] = date.split("-").map(Number);
-  const previousDate = new Date(Date.UTC(year, month - 1, day - 1));
-
-  return previousDate.toISOString().slice(0, 10);
-}
-
-export function formatWorkoutDate(date: string): string {
-  const workoutDay = date.slice(0, 10);
-  const todayDay = getCalendarDate(new Date());
-
-  if (workoutDay === todayDay) return "Today";
-
-  if (workoutDay === getPreviousCalendarDate(todayDay)) {
-    return "Yesterday";
-  }
-
-  const [year, month, day] = workoutDay.split("-").map(Number);
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(Date.UTC(year, month - 1, day)));
-}
-
 export function formatLastWorkout(workout: Workout): FormattedWorkout {
   const primaryMetrics: FormattedWorkout["primaryMetrics"] = [];
 
