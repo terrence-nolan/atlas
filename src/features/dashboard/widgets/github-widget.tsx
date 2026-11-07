@@ -13,7 +13,7 @@ export default async function GitHubWidget() {
       <div className="flex flex-row items-center justify-between pb-2">
         <h4 className="font-bold text-lg flex flex-row items-center gap-2">
           <GithubLogoIcon size={18} weight="bold" />
-          GitHub
+          Current Project
         </h4>
         {isToday(project.latestCommit?.date ?? null) && <CircleIcon size={12} weight="fill" className="text-sage" />}
       </div>
