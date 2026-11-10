@@ -27,6 +27,20 @@
   --lavender: #A49AB5;
   --ochre: #D3B978;
 
+  /* Dark accents */
+  --blue-dark: #304C5E;
+  --sage-dark: #526B5B;
+  --clay-dark: #936442;
+  --lavender-dark: #746985;
+  --ochre-dark: #9C803F;
+
+  /* Medium accents */
+  --blue-medium: #A5BAC7;
+  --sage-medium: #B2C3B5;
+  --clay-medium: #D8B59A;
+  --lavender-medium: #C4BDCF;
+  --ochre-medium: #E2D1A5;
+
   /* Soft backgrounds */
   --blue-soft: #E8EEF1;
   --sage-soft: #EAF0EB;
@@ -70,6 +84,20 @@
     --lavender: #C1B5D4;
     --ochre: #E3CB8B;
 
+    /* Dark accents */
+    --blue-dark: #C0D6E1;
+    --sage-dark: #C4D5C8;
+    --clay-dark: #E8C2A3;
+    --lavender-dark: #D9D0E5;
+    --ochre-dark: #EBD9A8;
+
+    /* Medium accents */
+    --blue-medium: #526F7E;
+    --sage-medium: #5B7663;
+    --clay-medium: #805F49;
+    --lavender-medium: #71677F;
+    --ochre-medium: #796B43;
+
     /* Soft backgrounds */
     --blue-soft: #263943;
     --sage-soft: #293B32;
@@ -110,6 +138,20 @@
   --color-clay: var(--clay);
   --color-lavender: var(--lavender);
   --color-ochre: var(--ochre);
+
+  /* Dark accents */
+  --color-blue-dark: var(--blue-dark);
+  --color-sage-dark: var(--sage-dark);
+  --color-clay-dark: var(--clay-dark);
+  --color-lavender-dark: var(--lavender-dark);
+  --color-ochre-dark: var(--ochre-dark);
+
+  /* Medium accents */
+  --color-blue-medium: var(--blue-medium);
+  --color-sage-medium: var(--sage-medium);
+  --color-clay-medium: var(--clay-medium);
+  --color-lavender-medium: var(--lavender-medium);
+  --color-ochre-medium: var(--ochre-medium);
 
   /* Soft backgrounds */
   --color-blue-soft: var(--blue-soft);
