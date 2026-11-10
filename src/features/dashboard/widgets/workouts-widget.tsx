@@ -15,18 +15,13 @@ export default async function WorkoutsWidget() {
         <div>
           <div className="flex flex-row justify-between pb-2 items-center">
             <h4 className="font-bold text-lg flex flex-row items-center gap-2">
-              <PulseIcon size={18} weight="bold" />
+              <PulseIcon size={18} weight="bold" className="text-clay-text" />
               Latest Workout
             </h4>
             {isToday(formattedWorkout.startedAt) && <CircleIcon size={12} weight="fill" className="text-clay" />}
           </div>
-          <h5 className="font-semibold">{formattedWorkout.name}</h5>
-          <div className="flex flex-row gap-1 items-center font-light text-xs pb-4">
-            <p>{formattedWorkout.type}</p>
-            <p>•</p>
-            <p>{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
-          </div>
-
+          <h5 className="font-semibold">{formattedWorkout.type}</h5>
+          <p className="font-light text-xs pb-4">{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
           <div className="flex flex-row gap-10 pb-4">
             {formattedWorkout.primaryMetrics.map((metric) => (
               <div key={metric.label} className="flex flex-col">
