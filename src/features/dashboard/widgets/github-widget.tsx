@@ -1,7 +1,8 @@
 import { connection } from "next/server";
-import { GithubLogoIcon, CircleIcon, ArrowUpRightIcon } from "@phosphor-icons/react/ssr";
+import { GithubLogoIcon, ArrowUpRightIcon } from "@phosphor-icons/react/ssr";
 import { getCurrentProjectData } from "@/features/github/data";
 import { getDateKey, formatCalendarDate, isToday } from "@/lib/utils/date"
+import RecentActivityIndicator from "../recent-activity-indicator";
 
 export default async function GitHubWidget() {
   await connection();
@@ -15,7 +16,7 @@ export default async function GitHubWidget() {
           <GithubLogoIcon size={18} weight="bold" className="text-sage-text" />
           Current Project
         </h4>
-        {isToday(project.latestCommit?.date ?? null) && <CircleIcon size={12} weight="fill" className="text-sage" />}
+        {isToday(project.latestCommit?.date ?? null) && <RecentActivityIndicator themeColor="sage" />}
       </div>
       <h5 className="font-semibold">{project.name}</h5>
       <p className="font-light text-xs pb-4">

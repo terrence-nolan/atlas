@@ -1,8 +1,9 @@
 import { connection } from "next/server";
-import { HeartStraightIcon, PulseIcon, CircleIcon } from "@phosphor-icons/react/ssr";
+import { HeartStraightIcon, PulseIcon } from "@phosphor-icons/react/ssr";
 
 import { getWorkoutsData } from "@/features/workouts/data";
 import { getDateKey, formatCalendarDate, isToday } from "@/lib/utils/date";
+import RecentActivityIndicator from "../recent-activity-indicator";
 
 export default async function WorkoutsWidget() {
   await connection();
@@ -18,7 +19,7 @@ export default async function WorkoutsWidget() {
               <PulseIcon size={18} weight="bold" className="text-clay-text" />
               Latest Workout
             </h4>
-            {isToday(formattedWorkout.startedAt) && <CircleIcon size={12} weight="fill" className="text-clay" />}
+            {isToday(formattedWorkout.startedAt) && <RecentActivityIndicator themeColor="clay" />}
           </div>
           <h5 className="font-semibold">{formattedWorkout.type}</h5>
           <p className="font-light text-xs pb-4">{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
