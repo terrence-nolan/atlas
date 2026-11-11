@@ -19,7 +19,7 @@ export default async function ReadingWidget() {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row items-center gap-2 pb-4">
-        <BookOpenIcon size={18} weight="bold" />
+        <BookOpenIcon size={18} weight="bold" className="text-lavender-text" />
         <h4 className="text-lg font-bold">Currently Reading</h4>
       </div>
 
@@ -46,14 +46,21 @@ export default async function ReadingWidget() {
             </p>
           </div>
           {progress !== null && (
-            <div className="pt-4 flex flex-col grow position-fixed bottom-0 left-0">
+            <div className="pt-4">
               <div className="h-1.5 w-full rounded-full bg-surface-secondary overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-lavender"
-                  style={{ width: `${progress}%` }}
-                />
+                <div className="h-full w-full bg-lavender-medium">
+                  <div
+                    className="h-full rounded-full bg-lavender-dark"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
               </div>
-              <p className="text-xs font-light pt-2">{progress}% complete</p>
+              <div className="flex justify-between text-xs font-light pt-1 pb-2">
+                <span>{progress}% complete</span>
+                <span>
+                  {book.currentPage} / {book.pageCount} pages
+                </span>
+              </div>
             </div>
           )}
         </div>

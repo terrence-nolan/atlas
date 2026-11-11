@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <Suspense fallback={null}>
-      <main className="flex flex-col justify-center px-12">
+      <main className="flex flex-col justify-center px-30">
         <div className="pb-4">
           <h1 className="text-3xl font-bold text-primary self-center pt-8">Terrence Nolan</h1>
           <h2 className="text-2xl font-semibold text-secondary pt-2">Software Engineer</h2>
