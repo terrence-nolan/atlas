@@ -6,20 +6,18 @@ import ReadingWidget from "./widgets/reading-widget";
 export default async function Dashboard() {
 
   return (
-    <div className="flex flex-col justify-center gap-2 p-7 border border-blue-soft rounded-xl">
-      <div className="flex flex-row gap-2">
+    <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <WidgetWrapper themeColor="sage">
           <GitHubWidget />
         </WidgetWrapper>
         <WidgetWrapper themeColor="clay">
           <WorkoutsWidget />
         </WidgetWrapper>
-      </div>
-      <div className="flex flex-row gap-2">
+      <div className="md:col-span-2">
         <WidgetWrapper themeColor="lavender">
           <ReadingWidget />
         </WidgetWrapper>
       </div>
-    </div>
+    </section>
   );
 }
