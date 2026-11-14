@@ -11,7 +11,7 @@ export default async function WorkoutsWidget() {
   const { latest: formattedWorkout } = await getWorkoutsData();
 
   return (
-    <section>
+    <section className="flex flex-col grow">
       {formattedWorkout ? (
         <div>
           <div className="flex flex-row justify-between pb-1 md:pb-2 items-center">

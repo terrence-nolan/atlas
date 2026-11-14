@@ -18,7 +18,7 @@ export default async function Home() {
             <div className="flex flex-row justify-between pb-2 items-center">
               <p className="text-sm flex flex-row items-center gap-2">
                 <MapPinSimpleIcon size={14} />
-                Framingham, MA
+                Massachusetts, USA
               </p>
             </div>
             <div className="flex flex-row justify-between pb-2 items-center">
