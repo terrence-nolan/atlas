@@ -22,11 +22,11 @@ export default async function WorkoutsWidget() {
             {isToday(formattedWorkout.startedAt) && <RecentActivityIndicator themeColor="clay" />}
           </div>
           <h5 className="font-semibold">{formattedWorkout.type}</h5>
-          <p className="font-light text-xs pb-2 md:pb-4">{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
+          <p className="font-light text-xs text-text-secondary pb-2 md:pb-4">{formatCalendarDate(getDateKey(formattedWorkout.startedAt))}</p>
           <div className="flex flex-row gap-10 pb-2 md:pb-4">
             {formattedWorkout.primaryMetrics.map((metric) => (
               <div key={metric.label} className="flex flex-col">
-                <span className="text-sm">{metric.label} </span>
+                <span className="text-sm text-text-secondary">{metric.label} </span>
                 <span className="font-semibold">{metric.value}</span>
               </div>
             ))}

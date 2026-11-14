@@ -6,9 +6,9 @@ export default async function Home() {
 
   return (
     <Suspense fallback={null}>
-      <main className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="pb-4">
-          <h1 className="pt-8 text-2xl font-bold text-primary sm:text-3xl">
+          <h1 className="text-2xl font-bold text-primary sm:text-3xl">
             Terrence Nolan
           </h1>
           <h2 className="pt-2 text-lg font-semibold text-secondary sm:text-2xl">
@@ -29,7 +29,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-          <Dashboard />
+        <Dashboard />
       </main>
     </Suspense>
   );
