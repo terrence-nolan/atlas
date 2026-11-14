@@ -1,5 +1,5 @@
 import { connection } from "next/server";
-import { HeartStraightIcon, PulseIcon } from "@phosphor-icons/react/ssr";
+import { HeartbeatIcon, PulseIcon } from "@phosphor-icons/react/ssr";
 
 import { getWorkoutsData } from "@/features/workouts/data";
 import { getDateKey, formatCalendarDate, isToday } from "@/lib/utils/date";
@@ -35,8 +35,8 @@ export default async function WorkoutsWidget() {
           </div>
           
           <div className="flex flex-row gap-1 items-center">
-            <HeartStraightIcon size={16} />
-            <span className="text-sm">{formattedWorkout.averageHeartRate ?? "-"}</span>
+            <HeartbeatIcon size={16} className="text-text-secondary" />
+            <span className="text-sm text-text-secondary">{formattedWorkout.averageHeartRate ?? "-"}</span>
           </div>
         </div>
       ) : (
