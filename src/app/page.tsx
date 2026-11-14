@@ -6,10 +6,14 @@ export default async function Home() {
 
   return (
     <Suspense fallback={null}>
-      <main className="flex flex-col justify-center px-30">
+      <main className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="pb-4">
-          <h1 className="text-3xl font-bold text-primary self-center pt-8">Terrence Nolan</h1>
-          <h2 className="text-2xl font-semibold text-secondary pt-2">Software Engineer</h2>
+          <h1 className="text-2xl font-bold text-primary sm:text-3xl">
+            Terrence Nolan
+          </h1>
+          <h2 className="pt-2 text-lg font-semibold text-secondary sm:text-2xl">
+            Software Engineer
+          </h2>
           <div className="flex flex-row gap-6 text-tertiary pt-2">
             <div className="flex flex-row justify-between pb-2 items-center">
               <p className="text-sm flex flex-row items-center gap-2">
@@ -25,7 +29,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-          <Dashboard />
+        <Dashboard />
       </main>
     </Suspense>
   );

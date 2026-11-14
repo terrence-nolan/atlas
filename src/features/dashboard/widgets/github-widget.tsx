@@ -1,5 +1,5 @@
 import { connection } from "next/server";
-import { GithubLogoIcon, ArrowUpRightIcon } from "@phosphor-icons/react/ssr";
+import { CodeIcon, ArrowUpRightIcon } from "@phosphor-icons/react/ssr";
 import { getCurrentProjectData } from "@/features/github/data";
 import { getDateKey, formatCalendarDate, isToday } from "@/lib/utils/date"
 import RecentActivityIndicator from "../recent-activity-indicator";
@@ -13,13 +13,13 @@ export default async function GitHubWidget() {
     <div className="flex flex-col">
       <div className="flex flex-row justify-between pb-2 items-center">
         <h4 className="font-bold text-lg flex flex-row items-center gap-2">
-          <GithubLogoIcon size={18} weight="bold" className="text-sage-text" />
+          <CodeIcon size={18} weight="bold" className="text-sage-text" />
           Current Project
         </h4>
         {isToday(project.latestCommit?.date ?? null) && <RecentActivityIndicator themeColor="sage" />}
       </div>
       <h5 className="font-semibold">{project.name}</h5>
-      <p className="font-light text-xs pb-4">
+      <p className="font-light text-xs text-text-secondary pb-4">
         Updated {formatCalendarDate(
           getDateKey(project.latestCommit?.date ?? null),
         )}
@@ -36,7 +36,7 @@ export default async function GitHubWidget() {
         rel="noopener noreferrer"
         className="text-sm text-sage-text flex flex-row items-center gap-1 pt-4 hover:underline"
       >
-        View repository
+        View on GitHub
         <ArrowUpRightIcon size={14} className="sage-text" />
       </a>
     </div>
