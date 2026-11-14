@@ -80,3 +80,80 @@ export async function deleteIntegrationToken(
     throw error;
   }
 }
+
+
+export async function acquireTokenRefreshLock(
+  provider: string,
+  lockId: string,
+): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+
+  const { data, error } = await supabase.rpc(
+    "acquire_token_refresh_lock",
+    {
+      p_provider: provider,
+      p_lock_id: lockId,
+      p_lease_seconds: 120,
+    },
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  return data === true;
+}
+
+export async function releaseTokenRefreshLock(
+  provider: string,
+  lockId: string,
+): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+
+  const { data, error } = await supabase.rpc(
+    "release_token_refresh_lock",
+    {
+      p_provider: provider,
+      p_lock_id: lockId,
+    },
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  return data === true;
+}
+
+export async function saveRefreshedIntegrationToken(
+  provider: string,
+  token: IntegrationToken,
+  lockId: string,
+): Promise<void> {
+  const supabase = getSupabaseAdmin();
+
+  const { data, error } = await supabase
+    .from("integration_tokens")
+    .update({
+      access_token_encrypted: encryptToken(token.accessToken),
+      refresh_token_encrypted: encryptToken(token.refreshToken),
+      token_type: token.tokenType,
+      scope: token.scope,
+      expires_at: token.expiresAt,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("provider", provider)
+    .eq("refresh_lock_id", lockId)
+    .select("provider")
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data) {
+    throw new Error(
+      "Cannot save refreshed token: refresh lock is no longer owned",
+    );
+  }
+}
