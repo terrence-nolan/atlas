@@ -45,6 +45,7 @@ export default async function ReadingWidget() {
               {book.authors?.join(", ") ?? "Unknown author"}
             </p>
           </div>
+          
           {progress !== null && (
             <div className="md:pt-4">
               <div className="h-1.5 w-full rounded-full bg-surface-secondary overflow-hidden">

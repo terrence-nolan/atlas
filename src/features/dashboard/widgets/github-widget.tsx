@@ -18,18 +18,23 @@ export default async function GitHubWidget() {
         </h4>
         {isToday(project.latestCommit?.date ?? null) && <RecentActivityIndicator themeColor="sage" />}
       </div>
+      
       <h5 className="font-semibold">{project.name}</h5>
+      
       <p className="font-light text-xs text-text-secondary pb-2 md:pb-4">
         Updated {formatCalendarDate(
           getDateKey(project.latestCommit?.date ?? null),
         )}
       </p>
+      
       <p>{project.description}</p>
+      
       <div className="flex flex-row text-wrap pt-2 md:pt-4">
         <span className="text-sm font-light">
           {project.languages.map((language) => language.name).join(", ")}
         </span>
       </div>
+      
       <a
         href={project.url}
         target="_blank"
