@@ -12,9 +12,9 @@ export default function RecentActivityIndicator({ themeColor }: RecentActivityIn
   };
 
   return (
-    <div className="relative h-4 w-4">
+    <div className="relative h-3 w-3">
       {/* Larger, lighter circle */}
-      <div className={`absolute inset-0 rounded-full opacity-25 ${indicatorThemes[themeColor]}`} />
+      <div className={`absolute inset-0 rounded-full blur-xs ${indicatorThemes[themeColor]}`} />
 
       {/* Smaller, darker circle */}
       <div className={`absolute inset-0 m-auto h-2 w-2 rounded-full ${indicatorThemes[themeColor]}`} />

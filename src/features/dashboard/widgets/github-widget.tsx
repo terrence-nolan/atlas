@@ -10,7 +10,7 @@ export default async function GitHubWidget() {
   const project = await getCurrentProjectData();
 
   return (
-    <div className="flex flex-col">
+    <section className="flex flex-col grow">
       <div className="flex flex-row justify-between pb-2 items-center">
         <h4 className="font-bold text-lg flex flex-row items-center gap-2">
           <CodeIcon size={18} weight="bold" className="text-sage-text" />
@@ -39,6 +39,6 @@ export default async function GitHubWidget() {
         View on GitHub
         <ArrowUpRightIcon size={14} className="sage-text" />
       </a>
-    </div>
+    </section>
   );
 }
