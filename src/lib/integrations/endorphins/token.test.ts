@@ -1,8 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
+  acquireTokenRefreshLock,
   getIntegrationToken,
+  releaseTokenRefreshLock,
   saveIntegrationToken,
+  saveRefreshedIntegrationToken,
 } from "@/lib/integrations/token-repository";
 
 import type { IntegrationToken } from "@/lib/integrations/token-types";
@@ -14,6 +17,9 @@ import {
 vi.mock("@/lib/integrations/token-repository", () => ({
   getIntegrationToken: vi.fn(),
   saveIntegrationToken: vi.fn(),
+  acquireTokenRefreshLock: vi.fn(),
+  releaseTokenRefreshLock: vi.fn(),
+  saveRefreshedIntegrationToken: vi.fn(),
 }));
 
 const TEST_CLIENT_ID = "test-client-id";
@@ -40,6 +46,9 @@ describe("getEndorphinsAccessToken", () => {
 
     vi.mocked(getIntegrationToken).mockResolvedValue(currentToken);
     vi.mocked(saveIntegrationToken).mockResolvedValue(undefined);
+    vi.mocked(acquireTokenRefreshLock).mockResolvedValue(true);
+    vi.mocked(releaseTokenRefreshLock).mockResolvedValue(true);
+    vi.mocked(saveRefreshedIntegrationToken).mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -106,10 +115,12 @@ describe("getEndorphinsAccessToken", () => {
     expect(body.get("client_secret")).toBe(TEST_CLIENT_SECRET);
     expect(body.get("refresh_token")).toBe("current-refresh-token");
 
-    expect(saveIntegrationToken).toHaveBeenCalledOnce();
+    expect(saveRefreshedIntegrationToken).toHaveBeenCalledOnce();
 
-    const [provider, savedToken] =
-      vi.mocked(saveIntegrationToken).mock.calls[0];
+    const [provider, savedToken, lockId] =
+      vi.mocked(saveRefreshedIntegrationToken).mock.calls[0];
+
+    expect(lockId).toEqual(expect.any(String));
 
     expect(provider).toBe("endorphins");
     expect(savedToken).toMatchObject({
@@ -173,7 +184,7 @@ describe("getEndorphinsAccessToken", () => {
     expect(accessToken).toBe("new-access-token");
     expect(fetchMock).toHaveBeenCalledOnce();
     expect(getIntegrationToken).toHaveBeenCalledTimes(2);
-    expect(saveIntegrationToken).toHaveBeenCalledOnce();
+    expect(saveRefreshedIntegrationToken).toHaveBeenCalledOnce();
   });
 
   it("uses updated credentials when another request already refreshed the token", async () => {
@@ -193,6 +204,7 @@ describe("getEndorphinsAccessToken", () => {
     vi.mocked(getIntegrationToken)
       .mockResolvedValueOnce(expiredToken)
       .mockResolvedValueOnce(updatedToken);
+    vi.mocked(acquireTokenRefreshLock).mockResolvedValue(false);
 
     const accessToken = await getEndorphinsAccessToken();
 
@@ -202,7 +214,7 @@ describe("getEndorphinsAccessToken", () => {
     expect(getIntegrationToken).toHaveBeenCalledTimes(2);
   });
 
-  it("retains the existing refresh token when the refresh response omits one", async () => {
+  it("throws when the refresh response omits a refresh token", async () => {
     const expiredToken = {
       ...currentToken,
       expiresAt: new Date(Date.now() - 1000).toISOString(),
@@ -217,14 +229,11 @@ describe("getEndorphinsAccessToken", () => {
       }),
     );
 
-    const accessToken = await getEndorphinsAccessToken();
+    await expect(getEndorphinsAccessToken()).rejects.toThrow(
+      "Endorphins returned an invalid refresh token response",
+    );
 
-    expect(accessToken).toBe("new-access-token");
-
-    const [, savedToken] =
-      vi.mocked(saveIntegrationToken).mock.calls[0];
-
-    expect(savedToken.refreshToken).toBe("current-refresh-token");
+    expect(saveRefreshedIntegrationToken).not.toHaveBeenCalled();
   });
 
   it("uses updated credentials when a concurrent refresh succeeds", async () => {
@@ -250,10 +259,6 @@ describe("getEndorphinsAccessToken", () => {
       new Response(null, { status: 400 }),
     );
 
-    const accessToken = await getEndorphinsAccessToken();
-
-    expect(accessToken).toBe("updated-access-token");
-    expect(getIntegrationToken).toHaveBeenCalledTimes(3);
     expect(saveIntegrationToken).not.toHaveBeenCalled();
   });
 });

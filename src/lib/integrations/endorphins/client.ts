@@ -72,17 +72,18 @@ export async function getEndorphinsActivities(
     throw new Error("Activity history must be between 1 and 365 days");
   }
 
-  let accessToken = await getEndorphinsAccessToken();
+  const accessToken = await getEndorphinsAccessToken();
 
   let response = await fetchActivities(accessToken, days);
 
   // Recover once if Endorphins rejects the access token.
   if (response.status === 401) {
-    accessToken = await getEndorphinsAccessToken({
-      forceRefresh: true,
-    });
+  const refreshedAccessToken = await getEndorphinsAccessToken({
+    forceRefresh: true,
+    rejectedAccessToken: accessToken,
+  });
 
-    response = await fetchActivities(accessToken, days);
+    response = await fetchActivities(refreshedAccessToken, days);
   }
 
   if (!response.ok) {
