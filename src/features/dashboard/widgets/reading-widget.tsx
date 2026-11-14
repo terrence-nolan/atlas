@@ -17,10 +17,10 @@ export default async function ReadingWidget() {
     : null;
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-row items-center gap-2 pb-4">
+    <div className="flex flex-col grow">
+      <div className="flex flex-row items-center gap-2 pb-2 md:pb-4">
         <BookOpenIcon size={18} weight="bold" className="text-lavender-text" />
-        <h4 className="text-lg font-bold">Currently Reading</h4>
+        <h4 className="text-lg font-bold">Current Book</h4>
       </div>
 
       <div className="flex flex-row gap-4">
@@ -35,7 +35,7 @@ export default async function ReadingWidget() {
           />
         )}
 
-        <div className="flex flex-col gap-4 grow">
+        <div className="flex flex-col gap-2 md:gap-4 grow">
           <div className="flex min-w-0 flex-col">
             <h5 className="font-semibold">
               {book.title ?? "Unknown title"}
@@ -45,6 +45,7 @@ export default async function ReadingWidget() {
               {book.authors?.join(", ") ?? "Unknown author"}
             </p>
           </div>
+          
           {progress !== null && (
             <div className="md:pt-4">
               <div className="h-1.5 w-full rounded-full bg-surface-secondary overflow-hidden">
@@ -55,7 +56,7 @@ export default async function ReadingWidget() {
                   />
                 </div>
               </div>
-              <div className="flex justify-between text-xs text-text-secondary font-light pt-1 pb-2">
+              <div className="flex justify-between text-xs text-text-secondary font-light pt-1 pb-1 md:pb-2">
                 <span>{progress}% complete</span>
                 <span>
                   {book.currentPage} / {book.pageCount} pages
