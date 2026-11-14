@@ -30,7 +30,7 @@ export default async function GitHubWidget() {
       <p>{project.description}</p>
       
       <div className="flex flex-row text-wrap pt-2 md:pt-4">
-        <span className="text-sm font-light">
+        <span className="text-sm font-light text-text-secondary">
           {project.languages.map((language) => language.name).join(", ")}
         </span>
       </div>
