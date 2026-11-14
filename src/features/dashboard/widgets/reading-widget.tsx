@@ -17,7 +17,7 @@ export default async function ReadingWidget() {
     : null;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col grow">
       <div className="flex flex-row items-center gap-2 pb-4">
         <BookOpenIcon size={18} weight="bold" className="text-lavender-text" />
         <h4 className="text-lg font-bold">Currently Reading</h4>
